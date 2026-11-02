@@ -3,7 +3,7 @@
 面向《随机信号分析》本科课程的纯客户端交互式仿真工具。四个教学模块覆盖随机信号基础、随机过程、线性系统响应与窄带过程；全部数值计算（蒙特卡洛生成、FFT、自相关、数字滤波、希尔伯特变换）均在浏览器内完成，无后端依赖。
 
 - 技术栈：React 18 + TypeScript + Tailwind CSS + Canvas 2D + KaTeX
-- 构建产物：纯静态文件（`dist/`），可直接部署到 Cloudflare Pages
+- 构建产物：纯静态文件（`dist/`），可直接部署到 Cloudflare（`wrangler.jsonc` 已声明静态资源目录）
 - 视觉规范：工程白底 + 发丝边框 + 单色强调，符合 bitcoin.org / RFC 文档式排版
 - 作者：Molirain · [GitHub](https://github.com/molirain) · [contact@molirain.com](mailto:contact@molirain.com)
 
@@ -17,13 +17,49 @@ npm run preview  # 预览构建产物
 npm run check    # 数值自检（分布、FFT、希尔伯特、滤波器、谱估计）
 ```
 
-## 部署到 Cloudflare Pages
+## 部署到 Cloudflare
+
+项目根目录的 `wrangler.jsonc` 已把 `dist` 声明为静态资源目录（`assets.directory`），因此不管是 Pages 还是 Workers 构建，wrangler 都不会再尝试按框架自动识别，也就不会因 Vite 5 版本被拒绝。
+
+### 方式一：Cloudflare Pages（推荐）
 
 | 配置项 | 值 |
 | --- | --- |
 | 构建命令 | `npm run build` |
 | 输出目录 | `dist` |
+| 框架预设 | None（不要选 Vite，否则 Pages 会尝试自动适配） |
 | Node 版本 | 18 或以上 |
+
+### 方式二：Workers 静态资源（`npx wrangler deploy`）
+
+构建日志里出现 `Executing user deploy command: npx wrangler deploy` 时，说明该项目的部署方式是 Workers 而非 Pages。此时必须存在 `wrangler.jsonc`，否则 wrangler 4 会进入框架自动配置流程并报：
+
+```text
+✘ [ERROR] The version of Vite used in the project ("5.4.21") cannot be automatically configured.
+  Please update the Vite version to at least "6.0.0" and try again.
+```
+
+当前 `wrangler.jsonc` 内容：
+
+```jsonc
+{
+  "name": "random-signal",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
+```
+
+部署命令：
+
+```bash
+npm run build
+npx wrangler deploy
+```
+
+本地可用 `npx wrangler deploy --dry-run` 验证配置，能读到 `dist` 中的文件即表示不再触发框架自动识别。
 
 ## 四个模块
 
@@ -59,6 +95,7 @@ npm run check    # 数值自检（分布、FFT、希尔伯特、滤波器、谱�
 
 ```text
 index.html
+wrangler.jsonc         Cloudflare 静态资源部署配置
 src/
   App.tsx               模块壳体、导航与页脚
   main.tsx              React 入口

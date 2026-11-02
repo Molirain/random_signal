@@ -1,0 +1,10 @@
+{
+  // Cloudflare Workers / Pages 静态资源部署配置。
+  // 显式声明 assets 目录后，wrangler 不会再尝试按框架自动推断并因 Vite 版本报错。
+  "name": "random-signal",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
