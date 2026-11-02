@@ -95,7 +95,7 @@ export default function App() {
         >
           <div className="w-full max-w-[460px] border border-hairline bg-white shadow-[0_12px_36px_rgba(15,23,42,0.18)]">
             <div className="border-b border-hairline px-5 py-3">
-              <div className="num text-[9px] uppercase tracking-[0.16em] text-accent">StochasLab / Welcome</div>
+              <div className="num text-[9px] uppercase tracking-[0.16em] text-accent">Molirain StochasLab / Welcome</div>
             </div>
             <div className="px-5 py-7">
               <h1 id="welcome-title" className="text-[22px] font-semibold tracking-tight text-ink">
@@ -121,13 +121,15 @@ export default function App() {
       )}
       {/* 顶部条：类 RFC 文档页眉 */}
       <header className="sticky top-0 z-30 border-b border-hairline bg-white">
-        <div className="mx-auto flex h-[45px] max-w-[1560px] items-center gap-4 px-4">
+        <div className="flex h-[45px] items-center gap-4 px-4 lg:px-6">
           <div className="flex items-baseline gap-2">
-            <span className="num text-[12px] font-semibold tracking-[0.02em] text-ink">StochasLab</span>
-            <span className="num hidden text-[9px] uppercase tracking-[0.16em] text-slate-400 sm:inline">
-              Random Signal Analysis Workbench
-            </span>
-          </div>
+                    <span className="num whitespace-nowrap text-[12px] font-semibold tracking-[0.02em] text-ink">
+                      <span className="text-slate-400">Molirain</span> StochasLab
+                    </span>
+                    <span className="num hidden whitespace-nowrap text-[9px] uppercase tracking-[0.16em] text-slate-400 xl:inline">
+                      Random Signal Analysis Workbench
+                    </span>
+                  </div>
           <nav className="ml-2 hidden items-stretch self-stretch md:flex" aria-label="模块导航">
             {MODULES.map((m) => (
               <button
@@ -138,21 +140,26 @@ export default function App() {
                   window.scrollTo({ top: 0, behavior: 'auto' });
                 }}
                 aria-current={active === m.id ? 'page' : undefined}
-                className={`relative border-b-2 px-3 text-[11.5px] transition-colors ${
+                className={`relative inline-flex items-center whitespace-nowrap border-b-2 px-3 text-[11.5px] transition-colors ${
                                   active === m.id
                                     ? 'border-accent font-medium text-ink'
                                     : 'border-transparent text-slate-500 hover:text-ink'
                                 }`}
               >
-                <span className="num mr-1.5 text-[9px] text-slate-400">{m.code}</span>
-                {m.cn}
+                <span className="num mr-1.5 hidden text-[9px] text-slate-400 sm:inline">{m.code}</span>
+                                <span className="whitespace-nowrap">{m.cn}</span>
               </button>
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-2">
-            <span className="num hidden text-[9px] text-slate-400 lg:inline">
-              PURE CLIENT-SIDE · NO SERVER
-            </span>
+                      <a
+                        href="https://blog.molirain.com"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="num whitespace-nowrap text-[9px] uppercase tracking-[0.08em] text-slate-500 hover:text-accent hover:underline"
+                      >
+                        MY BLOG
+                      </a>
             <span className="inline-flex items-center gap-1 border border-hairline px-1.5 py-[1px]">
               <span className="inline-block h-[5px] w-[5px] bg-[#16a34a]" />
               <span className="num text-[9px] text-slate-500">READY</span>
@@ -180,7 +187,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1560px] px-4 pb-10 pt-4">
+      <main className="px-4 pb-10 pt-4 lg:px-6">
         {/* 页眉信息带 */}
         <div className="mb-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-b border-hairline pb-2">
           <div>

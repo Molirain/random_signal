@@ -134,7 +134,7 @@ export function Workbench({
   right: React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-1 items-start gap-3 md:grid-cols-[236px_minmax(0,1fr)] xl:grid-cols-[244px_minmax(0,1fr)_336px]">
+    <div className="grid grid-cols-1 items-start gap-3 md:grid-cols-[252px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_360px] 2xl:grid-cols-[288px_minmax(0,1fr)_380px]">
           <aside className="border border-hairline bg-white md:sticky md:top-[46px] md:max-h-[calc(100vh-58px)] md:overflow-y-auto">
         {controls}
       </aside>

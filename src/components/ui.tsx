@@ -210,7 +210,7 @@ export function Segmented<T extends string | number>({
               type="button"
               title={o.title}
               onClick={() => onChange(o.value)}
-              className={`border-r border-hairline px-1.5 py-[5px] text-[10.5px] leading-tight transition-colors last:border-r-0 ${
+              className={`border-r border-hairline px-1 py-[5px] text-[10.5px] leading-tight transition-colors whitespace-nowrap last:border-r-0 ${
                 active
                   ? 'bg-accent font-medium text-white'
                   : 'bg-white text-slate-600 hover:bg-panel hover:text-ink'

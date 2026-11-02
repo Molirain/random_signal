@@ -5,7 +5,7 @@
 - 技术栈：React 18 + TypeScript + Tailwind CSS + Canvas 2D + KaTeX
 - 构建产物：纯静态文件（`dist/`），可直接部署到 Cloudflare（`wrangler.jsonc` 已声明静态资源目录）
 - 视觉规范：工程白底 + 发丝边框 + 单色强调，符合 bitcoin.org / RFC 文档式排版
-- 作者：Molirain · [GitHub](https://github.com/molirain) · [contact@molirain.com](mailto:contact@molirain.com)
+- 作者：Molirain · [GitHub](https://github.com/molirain) · [博客](https://blog.molirain.com) · [contact@molirain.com](mailto:contact@molirain.com)
 
 ## 本地运行
 
