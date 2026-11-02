@@ -1,0 +1,7 @@
+/项目要求/
+node_modules/
+dist/
+.vite/
+*.local
+.DS_Store
+devserver.log
