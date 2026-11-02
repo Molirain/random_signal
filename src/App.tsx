@@ -7,6 +7,7 @@ const Module3 = React.lazy(() => import('./modules/module3'));
 const Module4 = React.lazy(() => import('./modules/module4'));
 
 type ModuleId = 1 | 2 | 3 | 4;
+const WELCOME_STORAGE_KEY = 'stochaslab-welcome-seen';
 
 const MODULES: {
   id: ModuleId;
@@ -51,6 +52,7 @@ const MODULES: {
 ];
 
 export default function App() {
+  const [welcomeOpen, setWelcomeOpen] = useState(false);
   const [active, setActive] = useState<ModuleId>(() => {
     const hash = window.location.hash.replace('#', '').split('?')[0];
     const n = Number(hash);
@@ -63,10 +65,60 @@ export default function App() {
     }
   }, [active]);
 
+  useEffect(() => {
+    try {
+      setWelcomeOpen(window.localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true');
+    } catch {
+      setWelcomeOpen(true);
+    }
+  }, []);
+
+  const closeWelcome = () => {
+    try {
+      window.localStorage.setItem(WELCOME_STORAGE_KEY, 'true');
+    } catch {
+      // 存储不可用时仍允许用户继续使用当前页面。
+    }
+    setWelcomeOpen(false);
+  };
+
   const meta = MODULES.find((m) => m.id === active)!;
 
   return (
     <div className="min-h-screen bg-white">
+      {welcomeOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f172a]/35 px-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="welcome-title"
+        >
+          <div className="w-full max-w-[460px] border border-hairline bg-white shadow-[0_12px_36px_rgba(15,23,42,0.18)]">
+            <div className="border-b border-hairline px-5 py-3">
+              <div className="num text-[9px] uppercase tracking-[0.16em] text-accent">StochasLab / Welcome</div>
+            </div>
+            <div className="px-5 py-7">
+              <h1 id="welcome-title" className="text-[22px] font-semibold tracking-tight text-ink">
+                欢迎来到随机信号学习系统
+              </h1>
+              <p className="num mt-2 text-[10px] uppercase tracking-[0.12em] text-slate-400">
+                designed by Molirain
+              </p>
+              <p className="mt-5 text-[11px] leading-[1.7] text-slate-600">
+                通过四个交互式模块探索随机信号、随机过程、线性系统响应与窄带过程。所有计算均在浏览器本地完成。
+              </p>
+              <button
+                type="button"
+                onClick={closeWelcome}
+                autoFocus
+                className="mt-6 border border-accent bg-accent px-4 py-2 text-[11px] font-medium text-white hover:bg-[#1d4ed8]"
+              >
+                开始学习
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* 顶部条：类 RFC 文档页眉 */}
       <header className="sticky top-0 z-30 border-b border-hairline bg-white">
         <div className="mx-auto flex h-[45px] max-w-[1560px] items-center gap-4 px-4">
@@ -82,15 +134,15 @@ export default function App() {
                 key={m.id}
                 type="button"
                 onClick={() => {
-                                  setActive(m.id);
-                                  window.scrollTo({ top: 0, behavior: 'auto' });
-                                }}
-                                aria-current={active === m.id ? 'page' : undefined}
+                  setActive(m.id);
+                  window.scrollTo({ top: 0, behavior: 'auto' });
+                }}
+                aria-current={active === m.id ? 'page' : undefined}
                 className={`relative border-b-2 px-3 text-[11.5px] transition-colors ${
-                  active === m.id
-                    ? 'border-accent font-medium text-ink'
-                    : 'border-transparent text-slate-500 hover:text-ink'
-                }`}
+                                  active === m.id
+                                    ? 'border-accent font-medium text-ink'
+                                    : 'border-transparent text-slate-500 hover:text-ink'
+                                }`}
               >
                 <span className="num mr-1.5 text-[9px] text-slate-400">{m.code}</span>
                 {m.cn}
@@ -114,12 +166,12 @@ export default function App() {
               key={m.id}
               type="button"
               onClick={() => {
-                              setActive(m.id);
-                              window.scrollTo({ top: 0, behavior: 'auto' });
-                            }}
-                            className={`border-r border-hairline px-1 py-[5px] text-[10px] last:border-r-0 ${
-                active === m.id ? 'bg-accent text-white' : 'bg-white text-slate-600'
-              }`}
+                setActive(m.id);
+                window.scrollTo({ top: 0, behavior: 'auto' });
+              }}
+              className={`border-r border-hairline px-1 py-[5px] text-[10px] last:border-r-0 ${
+                              active === m.id ? 'bg-accent text-white' : 'bg-white text-slate-600'
+                            }`}
             >
               <span className="num mr-1 text-[8.5px] opacity-70">{m.code}</span>
               {m.cn}
@@ -197,11 +249,25 @@ export default function App() {
             <span className="num text-[9px] text-slate-400">
               Stochastic Simulation Workbench · React 18 + Canvas 2D + KaTeX · 静态部署 (Cloudflare Pages)
             </span>
-            <span className="text-[9px] text-slate-400">
-              <Tex>{String.raw`S_Y(\omega)=|H(\omega)|^2S_X(\omega)`}</Tex>
-              <span className="mx-2 text-slate-300">·</span>
-              <Tex>{String.raw`R_X(\tau)\;\overset{\mathcal{F}}{\longleftrightarrow}\;S_X(\omega)`}</Tex>
-            </span>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[9px] text-slate-400">
+              <a
+                href="https://github.com/molirain"
+                target="_blank"
+                rel="noreferrer"
+                className="text-accent hover:underline"
+              >
+                GitHub / Molirain
+              </a>
+              <a href="mailto:contact@molirain.com" className="text-accent hover:underline">
+                contact@molirain.com
+              </a>
+              <span className="hidden text-slate-300 sm:inline">·</span>
+              <span className="hidden sm:inline">
+                <Tex>{String.raw`S_Y(\omega)=|H(\omega)|^2S_X(\omega)`}</Tex>
+                <span className="mx-2 text-slate-300">·</span>
+                <Tex>{String.raw`R_X(\tau)\;\overset{\mathcal{F}}{\longleftrightarrow}\;S_X(\omega)`}</Tex>
+              </span>
+            </div>
           </div>
         </footer>
       </main>
